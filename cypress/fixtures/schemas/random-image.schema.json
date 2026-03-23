@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "required": ["message", "status"],
+  "properties": {
+    "message": {
+      "type": "string",
+      "pattern": "^https?://"
+    },
+    "status": {
+      "type": "string",
+      "const": "success"
+    }
+  },
+  "additionalProperties": false
+}

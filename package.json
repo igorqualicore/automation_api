@@ -1,0 +1,45 @@
+{
+  "name": "automation-api",
+  "version": "1.0.0",
+  "description": "Automacao de testes da Dog API com Cypress, JavaScript e Gherkin.",
+  "private": true,
+  "scripts": {
+    "test": "node scripts/run-tests.js",
+    "test:api": "cypress run --config-file cypress.config.js",
+    "report": "node scripts/generate-report.js",
+    "cy:open": "cypress open --config-file cypress.config.js"
+  },
+  "keywords": [
+    "qa",
+    "automation",
+    "api",
+    "cypress",
+    "cucumber",
+    "gherkin",
+    "dog-api"
+  ],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "cypress-cucumber-preprocessor": {
+    "json": {
+      "enabled": true,
+      "output": "reports/cucumber-json/cucumber-report.json"
+    },
+    "stepDefinitions": [
+      "cypress/e2e/step/**/*.js"
+    ]
+  },
+  "dependencies": {
+    "ajv": "^8.17.1"
+  },
+  "devDependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^24.0.1",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.5",
+    "cypress": "^13.17.0",
+    "esbuild": "^0.25.1",
+    "multiple-cucumber-html-reporter": "^3.9.3"
+  }
+}

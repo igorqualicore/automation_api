@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "required": ["message", "status", "code"],
+  "properties": {
+    "message": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "const": "error"
+    },
+    "code": {
+      "type": "integer",
+      "const": 404
+    }
+  },
+  "additionalProperties": false
+}
