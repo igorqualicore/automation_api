@@ -66,7 +66,7 @@ Embora page object seja um padrao mais comum para UI, aqui ele foi adaptado para
 
 ## Pre-requisitos
 
-- Node.js 20 ou superior
+- Node.js 22 ou superior
 - npm 10 ou superior
 
 ## Instalacao
@@ -155,12 +155,20 @@ O projeto possui pipeline no GitHub Actions em .github/workflows/api-tests.yml c
 - execucao automatica em push para a branch main
 - execucao automatica diaria as 8:00 no horario de Brasilia
 - execucao manual via workflow_dispatch
+- execucao em matriz para Linux, Windows e macOS
+- uso de Node.js 22.x na pipeline
 - checkout do codigo
 - instalacao do Node.js
 - instalacao das dependencias
 - execucao dos testes
 - publicacao do artefato do relatorio HTML da execucao
 - publicacao do artefato JSON bruto da execucao
+
+Cada execucao da pipeline gera artefatos separados por sistema operacional, facilitando a validacao do comportamento em:
+
+- ubuntu-latest
+- windows-latest
+- macos-latest
 
 Observacao sobre agendamento:
 

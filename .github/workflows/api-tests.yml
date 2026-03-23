@@ -10,7 +10,15 @@ on:
 
 jobs:
   api-tests:
-    runs-on: ubuntu-latest
+    name: API Tests - ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
 
     steps:
       - name: Checkout repository
@@ -19,7 +27,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: 22.x
           cache: npm
 
       - name: Install dependencies
@@ -32,7 +40,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: dog-api-html-report-${{ github.run_number }}
+          name: dog-api-html-report-${{ matrix.os }}-${{ github.run_number }}
           path: reports/html
           if-no-files-found: warn
 
@@ -40,6 +48,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: dog-api-cucumber-json-${{ github.run_number }}
+          name: dog-api-cucumber-json-${{ matrix.os }}-${{ github.run_number }}
           path: reports/cucumber-json
           if-no-files-found: warn
