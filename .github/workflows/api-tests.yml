@@ -1,5 +1,8 @@
 name: Dog API Tests
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   push:
     branches:
@@ -27,7 +30,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22.x
+          node-version: 24.x
           cache: npm
 
       - name: Install dependencies
@@ -36,13 +39,9 @@ jobs:
       - name: Run API tests
         run: npm test
 
-      - name: Upload HTML report artifact
+      - name: Rename raw test results
         if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: dog-api-html-report-${{ matrix.os }}-${{ github.run_number }}
-          path: reports/html
-          if-no-files-found: warn
+        run: node scripts/rename-report-json.js ${{ matrix.os }}
 
       - name: Upload raw test results artifact
         if: always()
@@ -50,4 +49,41 @@ jobs:
         with:
           name: dog-api-cucumber-json-${{ matrix.os }}-${{ github.run_number }}
           path: reports/cucumber-json
+          if-no-files-found: warn
+
+  consolidate-report:
+    name: Consolidated HTML Report
+    runs-on: ubuntu-latest
+    needs: api-tests
+    if: always()
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download raw test results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: dog-api-cucumber-json-*
+          merge-multiple: true
+          path: reports/cucumber-json
+
+      - name: Generate consolidated HTML report
+        run: npm run report
+
+      - name: Upload consolidated HTML report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dog-api-html-report-${{ github.run_number }}
+          path: reports/html
           if-no-files-found: warn

@@ -22,27 +22,31 @@ if (!hasJsonReports(reportJsonDirectory)) {
 reporter.generate({
   jsonDir: reportJsonDirectory,
   reportPath: reportDirectory,
-  pageTitle: "Dog API Automation Report",
-  reportName: "Dog API - Resultado da Automacao",
+  pageTitle: "Dog API | Relatorio Consolidado",
+  reportName: "Dog API | Execucao Consolidada de API Tests",
   displayDuration: true,
+  displayReportTime: true,
+  pageFooter: "Relatorio consolidado automaticamente a partir das execucoes em Linux, Windows e macOS.",
   metadata: {
     browser: {
-      name: "API tests",
+      name: "Cypress API Tests",
       version: "N/A"
     },
-    device: "Local or CI",
+    device: "CI",
     platform: {
-      name: process.platform,
-      version: process.version
+      name: "Multi-OS",
+      version: "ubuntu-latest | windows-latest | macos-latest"
     }
   },
   customData: {
-    title: "Execucao",
+    title: "Resumo da Execucao",
     data: [
       { label: "Projeto", value: "automation_api" },
       { label: "Base URL", value: process.env.DOG_API_BASE_URL || "https://dog.ceo/api" },
       { label: "Node", value: process.version },
-      { label: "Runner", value: "Cypress" }
+      { label: "Runner", value: "Cypress" },
+      { label: "Escopo", value: "Dog API - endpoints principais e cenario negativo" },
+      { label: "Ambientes", value: "Linux, Windows e macOS" }
     ]
   }
 });

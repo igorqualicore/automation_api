@@ -1,27 +1,55 @@
 # Automacao API - Dog CEO
 
-Projeto de automacao de testes da Dog API desenvolvido em JavaScript com Cypress, Gherkin e foco em boas praticas, organizacao, legibilidade e facilidade de execucao em ambiente local e CI.
+Projeto de automacao de testes de API desenvolvido como entrega de teste tecnico para vaga de QA Pleno, com foco em organizacao, boas praticas, legibilidade, portabilidade e evidencias claras de execucao.
 
-## Objetivo
+## Resumo Executivo
 
-Validar os principais endpoints da Dog API:
+Esta solucao valida os principais endpoints publicos da Dog API por meio de testes automatizados escritos em JavaScript com Cypress e Gherkin.
+
+Os principais objetivos da entrega foram:
+
+- garantir cobertura dos endpoints solicitados
+- estruturar o projeto de forma limpa e escalavel
+- disponibilizar execucao simples em ambiente local
+- gerar relatorio HTML claro para analise da execucao
+- automatizar a validacao em pipeline multi-plataforma
+
+## Escopo Validado
+
+Endpoints cobertos:
 
 - GET /breeds/list/all
 - GET /breed/{breed}/images
 - GET /breeds/image/random
 
-O projeto cobre cenarios positivos e negativos, validacao de contrato, relatorio em HTML e execucao automatizada em pipeline.
+Cobertura implementada:
 
-## Stack utilizada
+- cenario positivo para listagem completa de racas
+- cenario positivo para consulta de imagens por raca valida
+- cenario positivo para imagem aleatoria
+- cenario negativo para raca inexistente
+- validacao de contrato das respostas com schema
 
-- Node.js
+## Tecnologias Utilizadas
+
+- Node.js 24+
 - Cypress
 - Cucumber preprocessor com Gherkin
 - Ajv para validacao de schema
-- multiple-cucumber-html-reporter para relatorio
-- GitHub Actions para CI
+- multiple-cucumber-html-reporter
+- GitHub Actions
 
-## Estrutura do projeto
+## Diferenciais Tecnicos
+
+- estrutura organizada por feature, steps e pageobjects
+- separacao clara entre dados, fluxo de teste e camada de acesso aos endpoints
+- validacao de contrato com schemas dedicados
+- execucao local simples via npm
+- pipeline com execucao em Linux, Windows e macOS
+- agendamento diario e execucao automatica em push para main
+- geracao de um unico relatorio HTML consolidado ao final da pipeline
+
+## Estrutura do Projeto
 
 ```text
 .
@@ -47,6 +75,7 @@ O projeto cobre cenarios positivos e negativos, validacao de contrato, relatorio
 |       `-- e2e.js
 |-- scripts/
 |   |-- generate-report.js
+|   |-- rename-report-json.js
 |   `-- run-tests.js
 |-- .nvmrc
 |-- cypress.config.js
@@ -54,20 +83,29 @@ O projeto cobre cenarios positivos e negativos, validacao de contrato, relatorio
 `-- README.md
 ```
 
-## Padrao adotado
+## Padrao de Organizacao
 
-Embora page object seja um padrao mais comum para UI, aqui ele foi adaptado para API por meio de uma camada de objetos de endpoint dentro do proprio Cypress. Isso ajuda a centralizar chamadas HTTP e separar responsabilidades entre:
+O projeto segue uma estrutura simples e objetiva para facilitar manutencao e leitura:
 
-- e2e/feature: arquivos .feature
-- e2e/step: step definitions
-- e2e/pageobjects: camada de acesso aos endpoints
-- support/commands.js: comandos customizados reutilizaveis do Cypress
-- fixtures/schemas: contratos esperados de resposta
+- e2e/feature: cenarios em Gherkin
+- e2e/step: implementacao das regras e assercoes
+- e2e/pageobjects: encapsulamento das chamadas aos endpoints
+- fixtures/schemas: contratos esperados das respostas
+- support: comandos e configuracoes compartilhadas
+- scripts: automacao de execucao local e geracao de relatorio
+
+Embora o termo page object seja mais comum em UI, aqui ele foi adaptado como camada de acesso aos endpoints para evitar duplicacao e centralizar a interacao com a API.
 
 ## Pre-requisitos
 
-- Node.js 22 ou superior
+- Node.js 24 ou superior
 - npm 10 ou superior
+
+Se utilizar nvm:
+
+```bash
+nvm use
+```
 
 ## Instalacao
 
@@ -75,120 +113,99 @@ Embora page object seja um padrao mais comum para UI, aqui ele foi adaptado para
 npm install
 ```
 
-## Execucao dos testes
+## Como Executar
 
-Para executar toda a suite:
+Executar toda a suite com relatorio:
 
 ```bash
 npm test
 ```
 
-Esse comando:
-
-- executa os testes no Cypress em modo headless
-- gera arquivos JSON de resultados por feature
-- gera o relatorio HTML consolidado em reports/html
-
-Se quiser executar apenas o Cypress em modo headless:
+Executar apenas o runner do Cypress:
 
 ```bash
 npm run test:api
 ```
 
-Se quiser abrir o Cypress de forma interativa:
+Abrir o Cypress de forma interativa:
 
 ```bash
 npm run cy:open
 ```
 
-Se utilizar nvm, a versao sugerida esta definida em .nvmrc:
-
-```bash
-nvm use
-```
-
-Se quiser regenerar o relatorio HTML a partir do JSON:
+Regenerar o relatorio HTML a partir dos arquivos JSON:
 
 ```bash
 npm run report
 ```
 
-## Variaveis de ambiente opcionais
+## Configuracao Opcional
 
 O projeto aceita configuracao por variaveis de ambiente:
 
 - DOG_API_BASE_URL: URL base da API
 - DOG_API_TIMEOUT: timeout das requisicoes em milissegundos
 
-Exemplo no terminal:
+Exemplo:
 
 ```bash
 DOG_API_BASE_URL=https://dog.ceo/api
 DOG_API_TIMEOUT=15000
 ```
 
-## Cenarios automatizados
+Na ausencia dessas variaveis, o projeto utiliza valores padrao seguros para execucao local.
 
-- Listagem completa de racas com validacao de contrato
-- Consulta de imagens por raca valida
-- Consulta de imagem aleatoria
-- Consulta de raca inexistente com validacao de erro
+## Relatorio de Execucao
 
-## Relatorio de resultados
-
-Ao final da execucao, o relatorio fica disponivel em:
+Ao final da execucao local, os artefatos ficam disponiveis em:
 
 - reports/cucumber-json/
 - reports/html/index.html
 
-O relatorio HTML apresenta:
+O relatorio HTML foi configurado para ser mais objetivo e facilitar a avaliacao, apresentando:
 
-- testes com sucesso e falha
-- detalhes de erro
-- duracao de execucao
+- status final da execucao
+- cenarios aprovados e falhos
+- detalhes de erro quando existirem
+- duracao da execucao
 - consolidacao por feature e scenario
+- contexto do escopo validado
 
 ## Pipeline CI
 
-O projeto possui pipeline no GitHub Actions em .github/workflows/api-tests.yml com as etapas:
+O projeto possui pipeline no GitHub Actions em [.github/workflows/api-tests.yml](.github/workflows/api-tests.yml) com os seguintes comportamentos:
 
 - execucao automatica em push para a branch main
 - execucao automatica diaria as 8:00 no horario de Brasilia
 - execucao manual via workflow_dispatch
 - execucao em matriz para Linux, Windows e macOS
-- uso de Node.js 22.x na pipeline
-- checkout do codigo
-- instalacao do Node.js
-- instalacao das dependencias
-- execucao dos testes
-- publicacao do artefato do relatorio HTML da execucao
-- publicacao do artefato JSON bruto da execucao
+- uso de Node.js 24.x
 
-Cada execucao da pipeline gera artefatos separados por sistema operacional, facilitando a validacao do comportamento em:
+Fluxo da pipeline:
 
-- ubuntu-latest
-- windows-latest
-- macos-latest
+- cada sistema operacional executa a suite de testes
+- cada execucao publica o JSON bruto de resultado
+- um job final consolida os resultados
+- a pipeline publica um unico relatorio HTML final por execucao
 
 Observacao sobre agendamento:
 
 - o GitHub Actions usa UTC no cron
 - 8:00 de Brasilia corresponde a 11:00 UTC
 
-## Boas praticas aplicadas
+## Evidencias da Entrega
 
-- Separacao clara de responsabilidades
-- Configuracao centralizada por ambiente no Cypress
-- Validacao de contrato com schema
-- Cenarios Gherkin legiveis
-- Separacao explicita entre feature, steps e pageobjects
-- Camada de acesso aos endpoints para evitar duplicacao de requisicoes
-- Comandos customizados para assercoes reutilizaveis
-- Estrutura aderente ao padrao de pastas do Cypress
-- Relatorio HTML para analise da execucao
-- Estrutura preparada para evolucao da suite
+Esta entrega contempla:
 
-## Observacoes
+- automacao dos endpoints solicitados
+- cenarios positivos e negativos
+- validacao de contrato
+- relatorio HTML
+- pipeline multi-OS
+- documentacao de execucao local e em CI
 
-- A Dog API e um servico publico, portanto indisponibilidades externas podem impactar a execucao.
-- O endpoint de raca invalida foi mantido para ampliar a cobertura com um cenario negativo relevante.
+## Consideracoes Finais
+
+- a Dog API e um servico publico, portanto indisponibilidades externas podem impactar a execucao
+- o cenario negativo de raca inexistente foi incluido para ampliar a cobertura e demonstrar tratamento de erro
+- a estrutura foi organizada com foco em manutencao, clareza e reaproveitamento
