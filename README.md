@@ -177,7 +177,7 @@ O relatorio HTML foi configurado para ser mais objetivo e facilitar a avaliacao,
 O projeto possui pipeline no GitHub Actions em [.github/workflows/api-tests.yml](.github/workflows/api-tests.yml) com os seguintes comportamentos:
 
 - execucao automatica em push para a branch main
-- execucao automatica diaria as 8:00 no horario de Brasilia
+- execucao automatica diaria as 10:05 no horario de Brasilia
 - execucao manual via workflow_dispatch
 - execucao em matriz para Linux, Windows e macOS
 - uso de Node.js 24.x
@@ -193,7 +193,7 @@ Fluxo da pipeline:
 Observacao sobre agendamento:
 
 - o GitHub Actions usa UTC no cron
-- 8:00 de Brasilia corresponde a 11:00 UTC
+- 10:05 de Brasilia corresponde a 13:05 UTC
 
 ## Evidencias da Entrega
 
