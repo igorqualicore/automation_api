@@ -36,7 +36,7 @@ Cobertura implementada:
 - Cypress
 - Cucumber preprocessor com Gherkin
 - Ajv para validacao de schema
-- multiple-cucumber-html-reporter
+- gerador HTML customizado para consolidacao de resultados
 - GitHub Actions
 
 ## Diferenciais Tecnicos
@@ -170,6 +170,7 @@ O relatorio HTML foi configurado para ser mais objetivo e facilitar a avaliacao,
 - duracao da execucao
 - consolidacao por feature e scenario
 - contexto do escopo validado
+- ambiente em que cada execucao foi realizada
 
 ## Pipeline CI
 
@@ -180,6 +181,7 @@ O projeto possui pipeline no GitHub Actions em [.github/workflows/api-tests.yml]
 - execucao manual via workflow_dispatch
 - execucao em matriz para Linux, Windows e macOS
 - uso de Node.js 24.x
+- runtime das GitHub Actions forçado para Node 24
 
 Fluxo da pipeline:
 

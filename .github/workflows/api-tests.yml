@@ -15,6 +15,8 @@ jobs:
   api-tests:
     name: API Tests - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     strategy:
       fail-fast: false
       matrix:
@@ -25,10 +27,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 24.x
           cache: npm
@@ -45,7 +47,7 @@ jobs:
 
       - name: Upload raw test results artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: dog-api-cucumber-json-${{ matrix.os }}-${{ github.run_number }}
           path: reports/cucumber-json
@@ -56,13 +58,15 @@ jobs:
     runs-on: ubuntu-latest
     needs: api-tests
     if: always()
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 24.x
           cache: npm
@@ -71,7 +75,7 @@ jobs:
         run: npm ci
 
       - name: Download raw test results
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           pattern: dog-api-cucumber-json-*
           merge-multiple: true
@@ -82,7 +86,7 @@ jobs:
 
       - name: Upload consolidated HTML report artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: dog-api-html-report-${{ github.run_number }}
           path: reports/html
